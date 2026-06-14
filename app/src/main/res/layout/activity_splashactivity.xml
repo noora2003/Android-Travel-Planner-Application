@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1F6F5F"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <!-- Plane Icon inside white circle -->
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:background="@drawable/circle_white_bg"
+        android:contentDescription="App logo"
+        android:padding="24dp"
+        android:src="@drawable/ic_plane"
+        app:tint="#1F6F5F" />
+
+    <!-- App Name -->
+    <TextView
+        android:id="@+id/tvAppName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="cursive"
+        android:text="Travel Planner"
+        android:textColor="#EEEEEE"
+        android:textSize="34sp"
+        android:textStyle="bold" />
+
+    <!-- Tagline -->
+    <TextView
+        android:id="@+id/tvTagline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:alpha="0.8"
+        android:fontFamily="cursive"
+        android:text="Explore the world, your way"
+        android:textColor="#EEEEEE"
+        android:textSize="14sp" />
+
+</LinearLayout>

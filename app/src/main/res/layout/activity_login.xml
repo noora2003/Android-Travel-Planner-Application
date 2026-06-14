@@ -60,8 +60,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:boxStrokeColor="#306D29"
-            app:hintTextColor="#306D29">
+            app:boxStrokeColor="#1F6F56"
+            app:hintTextColor="#1F6F56">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etEmail"
@@ -91,19 +91,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            app:boxStrokeColor="#306D29"
-            app:hintTextColor="#306D29"
+            app:boxStrokeColor="#1F6F56"
+            app:hintTextColor="#1F6F56"
             app:endIconMode="password_toggle">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:drawableStart="@drawable/lock"
+                android:drawablePadding="8dp"
                 android:hint="Enter your password"
                 android:inputType="textPassword"
-                android:textColor="#0D530E"
-                android:drawableStart="@drawable/lock"
-                android:drawablePadding="8dp" />
+                android:textColor="#1F6F5F" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Error -->
@@ -137,7 +137,7 @@
             android:text="Log in"
             android:textColor="#E7E1B1"
             android:backgroundTint="#1F6F5F"
-            app:cornerRadius="8dp" />
+             />
 
         <!-- Divider -->
         <LinearLayout
