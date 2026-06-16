@@ -102,7 +102,6 @@ public class AdminReservationsFragment extends Fragment {
             holder.tvSub1.setText("👤 " + row.userName + "  |  👥 " + row.quantity + "  |  " + row.type);
             holder.tvSub2.setText("📅 " + row.date + "  |  Status: " + row.status);
 
-            // إخفاء أزرار Edit و Delete للحجوزات (يمكنك تعديلها حسب الحاجة)
             holder.btnEdit.setVisibility(View.GONE);
             holder.btnDelete.setVisibility(View.GONE);
         }

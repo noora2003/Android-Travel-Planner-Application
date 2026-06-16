@@ -131,7 +131,6 @@ public class AdminTripsFragment extends Fragment {
         }
     }
 
-    // ── Add Trip Dialog ────────────────────────────────────────────────────
     private void showAddTripDialog() {
         View v = LayoutInflater.from(requireContext())
                 .inflate(R.layout.dialog_add_trip, null);
@@ -182,7 +181,6 @@ public class AdminTripsFragment extends Fragment {
                 .show();
     }
 
-    // ── Edit Trip Dialog ────────────────────────────────────────────────────
     private void showEditTripDialog(TripRow row, int position) {
         View v = LayoutInflater.from(requireContext())
                 .inflate(R.layout.dialog_add_trip, null);
@@ -226,7 +224,6 @@ public class AdminTripsFragment extends Fragment {
                         double price = Double.parseDouble(priceStr);
                         double rating = Double.parseDouble(ratingStr);
 
-                        // حذف القديم وإضافة الجديد
                         db.getWritableDatabase().delete(DatabaseHelper.TABLE_TRIPS,
                                 DatabaseHelper.COL_TRIP_ID + "=?",
                                 new String[]{String.valueOf(row.id)});
