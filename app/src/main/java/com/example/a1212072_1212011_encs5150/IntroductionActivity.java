@@ -42,8 +42,8 @@ public class IntroductionActivity extends AppCompatActivity {
         Animation fadeIn  = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         Animation slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down);
 
-        // Cards come from top ↓
-        findViewById(R.id.cardsRow).startAnimation(slideDown);
+        // Hero image fades in
+        findViewById(R.id.heroImage).startAnimation(slideDown);
 
         // Bottom section slides up ↑
         findViewById(R.id.bottomSection).startAnimation(fadeIn);

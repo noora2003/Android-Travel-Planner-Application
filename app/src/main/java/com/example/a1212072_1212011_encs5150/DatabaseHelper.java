@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME    = "TravelPlanner.db";
-    private static final int    DATABASE_VERSION = 2;
+    private static final int    DATABASE_VERSION = 3;
 
     // Users table
     public static final String TABLE_USERS       = "users";
@@ -32,6 +32,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_RATING       = "rating";
     public static final String COL_DESCRIPTION  = "description";
     public static final String COL_IMAGE        = "image";
+
+    // Favorites table
+    public static final String TABLE_FAVORITES  = "favorites";
+    public static final String COL_FAV_ID       = "id";
+    public static final String COL_FAV_EMAIL    = "user_email";
+    public static final String COL_FAV_TRIP_ID  = "trip_id";
+    //  Reservations table
+    public static final String TABLE_RESERVATIONS    = "reservations";
+    public static final String COL_RES_ID            = "id";
+    public static final String COL_RES_EMAIL         = "user_email";
+    public static final String COL_RES_TRIP_ID       = "trip_id";
+    public static final String COL_RES_TRIP_NAME     = "trip_name";
+    public static final String COL_RES_QUANTITY      = "quantity";
+    public static final String COL_RES_TYPE          = "reservation_type";
+    public static final String COL_RES_DATE          = "reservation_date";
+    public static final String COL_RES_TOTAL_PRICE   = "total_price";
+    public static final String COL_RES_STATUS        = "status";
+
 
     private static final String CREATE_USERS_TABLE =
             "CREATE TABLE " + TABLE_USERS + " (" +
@@ -58,6 +76,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     COL_IMAGE       + " TEXT" +
                     ");";
 
+    private static final String CREATE_FAVORITES_TABLE =
+            "CREATE TABLE " + TABLE_FAVORITES + " (" +
+                    COL_FAV_ID     + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COL_FAV_EMAIL  + " TEXT, " +
+                    COL_FAV_TRIP_ID+ " INTEGER, " +
+                    "UNIQUE(" + COL_FAV_EMAIL + ", " + COL_FAV_TRIP_ID + ")" +
+                    ");";
+
+    private static final String CREATE_RESERVATIONS_TABLE =
+            "CREATE TABLE " + TABLE_RESERVATIONS + " (" +
+                    COL_RES_ID          + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COL_RES_EMAIL       + " TEXT, " +
+                    COL_RES_TRIP_ID     + " INTEGER, " +
+                    COL_RES_TRIP_NAME   + " TEXT, " +
+                    COL_RES_QUANTITY    + " INTEGER, " +
+                    COL_RES_TYPE        + " TEXT, " +
+                    COL_RES_DATE        + " TEXT, " +
+                    COL_RES_TOTAL_PRICE + " REAL, " +
+                    COL_RES_STATUS      + " TEXT" +
+                    ");";
+
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -66,13 +106,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_USERS_TABLE);
         db.execSQL(CREATE_TRIPS_TABLE); // add this line
+        db.execSQL(CREATE_FAVORITES_TABLE);
+        db.execSQL(CREATE_RESERVATIONS_TABLE);
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TRIPS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_FAVORITES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RESERVATIONS);
         onCreate(db);
+
     }
 
     //  User methods
@@ -162,7 +208,124 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                            String description, String image) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COL_TRIP_ID,     id);
+        values.put(COL_TRIP_ID,    id);
+        values.put(COL_DESTINATION,destination);
+        values.put(COL_COUNTRY,    country);
+        values.put(COL_DURATION,   duration);
+        values.put(COL_PRICE,      price);
+        values.put(COL_RATING,     rating);
+        values.put(COL_DESCRIPTION,description);
+        values.put(COL_IMAGE,      image);
+        db.insertWithOnConflict(TABLE_TRIPS, null, values,
+                SQLiteDatabase.CONFLICT_IGNORE);
+    }
+
+    public Cursor getAllTrips() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.query(TABLE_TRIPS, null, null,
+                null, null, null, null);
+    }
+
+    //  FAVORITES METHODS
+
+    public void addFavorite(String email, int tripId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COL_FAV_EMAIL,   email);
+        values.put(COL_FAV_TRIP_ID, tripId);
+        db.insertWithOnConflict(TABLE_FAVORITES, null, values,
+                SQLiteDatabase.CONFLICT_IGNORE);
+    }
+
+    public void removeFavorite(String email, int tripId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_FAVORITES,
+                COL_FAV_EMAIL + "=? AND " + COL_FAV_TRIP_ID + "=?",
+                new String[]{email, String.valueOf(tripId)});
+    }
+
+    public boolean isFavorite(String email, int tripId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_FAVORITES, null,
+                COL_FAV_EMAIL + "=? AND " + COL_FAV_TRIP_ID + "=?",
+                new String[]{email, String.valueOf(tripId)},
+                null, null, null);
+        boolean result = cursor.getCount() > 0;
+        cursor.close();
+        return result;
+    }
+
+    public Cursor getFavoriteTrips(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT t.* FROM " + TABLE_TRIPS + " t " +
+                "INNER JOIN " + TABLE_FAVORITES + " f " +
+                "ON t." + COL_TRIP_ID + " = f." + COL_FAV_TRIP_ID +
+                " WHERE f." + COL_FAV_EMAIL + " = ?";
+        return db.rawQuery(query, new String[]{email});
+    }
+
+    //  RESERVATIONS METHODS
+
+    public boolean insertReservation(String email, int tripId, String tripName,
+                                     int quantity, String type, String date,
+                                     double totalPrice, String status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COL_RES_EMAIL,      email);
+        values.put(COL_RES_TRIP_ID,    tripId);
+        values.put(COL_RES_TRIP_NAME,  tripName);
+        values.put(COL_RES_QUANTITY,   quantity);
+        values.put(COL_RES_TYPE,       type);
+        values.put(COL_RES_DATE,       date);
+        values.put(COL_RES_TOTAL_PRICE,totalPrice);
+        values.put(COL_RES_STATUS,     status);
+        long result = db.insert(TABLE_RESERVATIONS, null, values);
+        return result != -1;
+    }
+
+    public Cursor getUserReservations(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.query(TABLE_RESERVATIONS, null,
+                COL_RES_EMAIL + "=?",
+                new String[]{email},
+                null, null, COL_RES_DATE + " DESC");
+    }
+
+    public Cursor getAllReservations() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.query(TABLE_RESERVATIONS, null,
+                null, null, null, null,
+                COL_RES_DATE + " DESC");
+    }
+
+
+    //  ADMIN METHODS
+
+    public Cursor getAllUsers() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.query(TABLE_USERS, null, null,
+                null, null, null, null);
+    }
+
+    public boolean deleteUser(String email) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rows = db.delete(TABLE_USERS,
+                COL_EMAIL + "=?", new String[]{email});
+        return rows > 0;
+    }
+
+    public boolean deleteTrip(int tripId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rows = db.delete(TABLE_TRIPS,
+                COL_TRIP_ID + "=?", new String[]{String.valueOf(tripId)});
+        return rows > 0;
+    }
+
+    public boolean updateTrip(int id, String destination, String country,
+                              int duration, double price, double rating,
+                              String description, String image) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
         values.put(COL_DESTINATION, destination);
         values.put(COL_COUNTRY,     country);
         values.put(COL_DURATION,    duration);
@@ -170,10 +333,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COL_RATING,      rating);
         values.put(COL_DESCRIPTION, description);
         values.put(COL_IMAGE,       image);
-
-        // insertWithOnConflict ignores duplicates so API data
-        // is not inserted twice if Connect is pressed again
-        db.insertWithOnConflict(TABLE_TRIPS, null, values,
-                SQLiteDatabase.CONFLICT_IGNORE);
+        int rows = db.update(TABLE_TRIPS, values,
+                COL_TRIP_ID + "=?", new String[]{String.valueOf(id)});
+        return rows > 0;
     }
+
+
 }
