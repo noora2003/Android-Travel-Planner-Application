@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvDialogTripName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Trip Name"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quantity / Participants"
+        android:textSize="13sp" />
+
+    <EditText
+        android:id="@+id/etQuantity"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="Enter number of people"
+        android:inputType="number"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reservation Type"
+        android:textSize="13sp" />
+
+    <Spinner
+        android:id="@+id/spinnerReservationType"
+        android:layout_width="match_parent"
+        android:layout_height="48dp" />
+
+</LinearLayout>

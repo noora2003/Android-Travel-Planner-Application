@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/nav_admin_users" android:title="Manage Users" />
+        <item android:id="@+id/nav_admin_trips" android:title="Manage Trips" />
+        <item android:id="@+id/nav_admin_reservations" android:title="View Reservations" />
+        <item android:id="@+id/nav_admin_add_admin" android:title="Add New Admin" />
+        <item android:id="@+id/nav_admin_logout" android:title="Logout" />
+    </group>
+</menu>

@@ -33,6 +33,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_DESCRIPTION  = "description";
     public static final String COL_IMAGE        = "image";
 
+
+    // إضافة constants
+    public static final String TABLE_FAVORITES = "favorites";
+    public static final String TABLE_RESERVATIONS = "reservations";
+
+    // إضافة أعمدة
+    public static final String COL_USER_ID = "user_id";
+    public static final String COL_TRIP_ID = "trip_id";
+    public static final String COL_RESERVATION_DATE = "reservation_date";
+    public static final String COL_QUANTITY = "quantity";
+    public static final String COL_RESERVATION_TYPE = "reservation_type";
+    public static final String COL_STATUS = "status"; // "active", "completed", "cancelled"
+
+    // دوال إنشاء الجداول
+    private static final String CREATE_FAVORITES_TABLE =
+            "CREATE TABLE " + TABLE_FAVORITES + " (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COL_USER_ID + " INTEGER, " +
+                    COL_TRIP_ID + " INTEGER, " +
+                    "FOREIGN KEY(" + COL_USER_ID + ") REFERENCES " + TABLE_USERS + "(" + COL_USER_ID + "), " +
+                    "FOREIGN KEY(" + COL_TRIP_ID + ") REFERENCES " + TABLE_TRIPS + "(" + COL_TRIP_ID + ")" +
+                    ");";
+
+    private static final String CREATE_RESERVATIONS_TABLE =
+            "CREATE TABLE " + TABLE_RESERVATIONS + " (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COL_USER_ID + " INTEGER, " +
+                    COL_TRIP_ID + " INTEGER, " +
+                    COL_RESERVATION_DATE + " TEXT, " +
+                    COL_QUANTITY + " INTEGER, " +
+                    COL_RESERVATION_TYPE + " TEXT, " +
+                    COL_STATUS + " TEXT, " +
+                    "FOREIGN KEY(" + COL_USER_ID + ") REFERENCES " + TABLE_USERS + "(" + COL_USER_ID + "), " +
+                    "FOREIGN KEY(" + COL_TRIP_ID + ") REFERENCES " + TABLE_TRIPS + "(" + COL_TRIP_ID + ")" +
+                    ");";
+
+
     private static final String CREATE_USERS_TABLE =
             "CREATE TABLE " + TABLE_USERS + " (" +
                     COL_USER_ID     + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
