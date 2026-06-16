@@ -1,89 +1,152 @@
 package com.example.a1212072_1212011_encs5150;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import java.util.ArrayList;
 
-public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.List;
 
-    private ArrayList<Trip> trips;
-    private Context context;
-    private OnReserveClickListener reserveListener;
+public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder> {
 
-    public interface OnReserveClickListener {
-        void onReserveClick(int tripId);
+    private final Context context;
+    private List<TripModel> tripList;
+    private final OnTripClickListener listener;
+
+    public interface OnTripClickListener {
+        void onTripClick(TripModel trip);
+        void onFavoriteClick(TripModel trip, int position);
+        void onReserveClick(TripModel trip);
     }
 
-    public TripAdapter(ArrayList<Trip> trips, Context context, OnReserveClickListener listener) {
-        this.trips = trips;
-        this.context = context;
-        this.reserveListener = listener;
+    public TripAdapter(Context context, List<TripModel> tripList, OnTripClickListener listener) {
+        this.context  = context;
+        this.tripList = tripList;
+        this.listener = listener;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public TripViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_trip, parent, false);
-        return new ViewHolder(view);
+        return new TripViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Trip trip = trips.get(position);
+    public void onBindViewHolder(@NonNull TripViewHolder holder, int position) {
+        TripModel trip = tripList.get(position);
 
+        holder.tvNumber.setText(String.valueOf(position + 1));
         holder.tvDestination.setText(trip.getDestination());
         holder.tvCountry.setText(trip.getCountry());
-        holder.tvDuration.setText(trip.getDurationDays() + " days");
-        holder.tvPrice.setText("$" + trip.getPrice());
-        holder.tvRating.setText("★ " + trip.getRating());
+        holder.tvRating.setText("★ " + trip.getRating() + "  ·  reviews");
+        holder.tvPriceDuration.setText("$" + (int) trip.getPrice()
+                + "  |  " + trip.getDurationDays() + " Days");
 
-        holder.btnFavorite.setImageResource(trip.isFavorite() ?
-                android.R.drawable.btn_star_big_on :
-                android.R.drawable.btn_star_big_off);
+        // ── FIX 1: No Glide — load image with plain Thread + Handler ──────────
+        loadImage(trip.getImage(), holder.ivTripImage);
 
-        holder.btnFavorite.setOnClickListener(v -> {
-            trip.setFavorite(!trip.isFavorite());
-            notifyItemChanged(position);
-            // TODO: حفظ المفضلة في SharedPreferences أو DB
-        });
+        // ── FIX 2: No ic_favorite_filled — tint the single existing drawable ──
+        // ic_favorite_border exists in your drawable folder (confirmed from XML).
+        // Gold tint = favorited, white tint = not favorited. No second file needed.
+        holder.ivFavorite.setImageResource(R.drawable.ic_favorite_border);
+        holder.ivFavorite.setColorFilter(
+                trip.isFavorite() ? Color.parseColor("#FFD700")   // gold = active
+                        : Color.parseColor("#EEEEEE")); // white = inactive
 
-        holder.btnReserve.setOnClickListener(v -> {
-            if (reserveListener != null) {
-                reserveListener.onReserveClick(trip.getId());
-            }
-        });
-
+        // ── FIX 3: Null-safe click listeners ─────────────────────────────────
         holder.itemView.setOnClickListener(v -> {
-            // TODO: فتح TripDetailFragment
+            if (listener != null) listener.onTripClick(trip);
+        });
+        holder.ivFavorite.setOnClickListener(v -> {
+            if (listener != null) listener.onFavoriteClick(trip, holder.getAdapterPosition());
+        });
+        holder.btnReserve.setOnClickListener(v -> {
+            if (listener != null) listener.onReserveClick(trip);
         });
     }
 
     @Override
     public int getItemCount() {
-        return trips.size();
+        return tripList != null ? tripList.size() : 0;
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvDestination, tvCountry, tvDuration, tvPrice, tvRating;
-        ImageButton btnFavorite;
-        Button btnReserve;
+    public void updateList(List<TripModel> newList) {
+        tripList = newList;
+        notifyDataSetChanged();
+    }
 
-        ViewHolder(View itemView) {
+    // ── Image loader (replaces Glide) ─────────────────────────────────────────
+
+    private void loadImage(String imageUrl, ImageView imageView) {
+        imageView.setImageResource(R.drawable.ic_plane); // placeholder
+        imageView.clearColorFilter();                    // don't tint placeholder gold
+
+        if (imageUrl == null || imageUrl.isEmpty()) return;
+
+        imageView.setTag(imageUrl); // tag used to cancel stale loads on recycled rows
+
+        new Thread(() -> {
+            Bitmap bitmap = downloadBitmap(imageUrl);
+            new Handler(Looper.getMainLooper()).post(() -> {
+                if (imageUrl.equals(imageView.getTag()) && bitmap != null) {
+                    imageView.setImageBitmap(bitmap);
+                }
+            });
+        }).start();
+    }
+
+    private Bitmap downloadBitmap(String imageUrl) {
+        HttpURLConnection conn = null;
+        try {
+            URL url = new URL(imageUrl);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(5000);
+            conn.setReadTimeout(5000);
+            conn.setDoInput(true);
+            conn.connect();
+            if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                InputStream is = conn.getInputStream();
+                return BitmapFactory.decodeStream(is);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null) conn.disconnect();
+        }
+        return null;
+    }
+
+    // ── ViewHolder ────────────────────────────────────────────────────────────
+
+    static class TripViewHolder extends RecyclerView.ViewHolder {
+        ImageView ivTripImage, ivFavorite;
+        TextView  tvNumber, tvDestination, tvCountry, tvRating, tvPriceDuration;
+        Button    btnReserve;
+
+        TripViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvDestination = itemView.findViewById(R.id.tvDestination);
-            tvCountry = itemView.findViewById(R.id.tvCountry);
-            tvDuration = itemView.findViewById(R.id.tvDuration);
-            tvPrice = itemView.findViewById(R.id.tvPrice);
-            tvRating = itemView.findViewById(R.id.tvRating);
-            btnFavorite = itemView.findViewById(R.id.btnFavorite);
-            btnReserve = itemView.findViewById(R.id.btnReserve);
+            ivTripImage     = itemView.findViewById(R.id.ivTripImage);
+            ivFavorite      = itemView.findViewById(R.id.ivFavorite);
+            tvNumber        = itemView.findViewById(R.id.tvNumber);
+            tvDestination   = itemView.findViewById(R.id.tvDestination);
+            tvCountry       = itemView.findViewById(R.id.tvCountry);
+            tvRating        = itemView.findViewById(R.id.tvRating);
+            tvPriceDuration = itemView.findViewById(R.id.tvPriceDuration);
+            btnReserve      = itemView.findViewById(R.id.btnReserve);
         }
     }
 }
