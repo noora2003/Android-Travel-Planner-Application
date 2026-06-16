@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/admin_nav_dashboard"
+            android:title="Dashboard"
+            android:icon="@drawable/ic_plane" />
+        <item
+            android:id="@+id/admin_nav_users"
+            android:title="Manage Users"
+            android:icon="@drawable/ic_plane" />
+        <item
+            android:id="@+id/admin_nav_trips"
+            android:title="Manage Trips"
+            android:icon="@drawable/ic_plane" />
+        <item
+            android:id="@+id/admin_nav_reservations"
+            android:title="View Reservations"
+            android:icon="@drawable/ic_plane" />
+        <item
+            android:id="@+id/admin_nav_add_admin"
+            android:title="Add New Admin"
+            android:icon="@drawable/ic_plane" />
+        <item
+            android:id="@+id/admin_nav_logout"
+            android:title="Logout"
+            android:icon="@drawable/ic_plane" />
+    </group>
+</menu>
