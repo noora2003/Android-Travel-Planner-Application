@@ -34,19 +34,16 @@ public class AdminHomeActivity extends AppCompatActivity
 
         dbHelper = new DatabaseHelper(this);
 
-        // Setup Toolbar
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Admin Panel");
         }
 
-        // Setup Drawer
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navView);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // Hamburger icon
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar,
                 androidx.appcompat.R.string.abc_action_bar_up_description,
@@ -54,13 +51,12 @@ public class AdminHomeActivity extends AppCompatActivity
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        // Load Dashboard by default
         if (savedInstanceState == null) {
             loadFragment(new AdminDashboardFragment(), "Dashboard");
             navigationView.setCheckedItem(R.id.admin_nav_dashboard);
         }
 
-        // Back button behavior
+
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
