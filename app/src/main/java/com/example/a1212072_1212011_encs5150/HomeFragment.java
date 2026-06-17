@@ -17,6 +17,11 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        // Add fade + slide up animation when Home loads
+        android.view.animation.Animation fadeSlide = android.view.animation.AnimationUtils.loadAnimation(
+                requireContext(), R.anim.fade_in);
+
+        view.findViewById(R.id.tvWelcome).startAnimation(fadeSlide);
 
         dbHelper = new DatabaseHelper(requireContext());
 
