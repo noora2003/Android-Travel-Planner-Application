@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="180dp"
+    android:orientation="vertical"
+    android:gravity="bottom"
+    android:padding="20dp"
+    android:background="#0D530E">
+
+    <!-- Admin Icon -->
+    <ImageView
+        android:id="@+id/navAdminIcon"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/ic_admin"
+        android:background="@drawable/circle_white_bg"
+        android:padding="14dp"
+        android:contentDescription="Admin profile"
+        android:layout_marginBottom="10dp"
+        app:tint="#0D530E" />
+
+    <!-- Admin Title -->
+    <TextView
+        android:id="@+id/navAdminTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Admin Panel"
+        android:textColor="#EEEEEE"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <!-- Admin Email -->
+    <TextView
+        android:id="@+id/navAdminEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="admin@admin.com"
+        android:textColor="#AA6FCF97"
+        android:textSize="12sp" />
+
+</LinearLayout>
