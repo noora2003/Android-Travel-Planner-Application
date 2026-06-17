@@ -13,7 +13,7 @@
         android:id="@+id/navAdminIcon"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:src="@drawable/ic_admin"
+        android:src="@drawable/ic_plane"
         android:background="@drawable/circle_white_bg"
         android:padding="14dp"
         android:contentDescription="Admin profile"
