@@ -33,7 +33,7 @@ public class ProfileFragment extends Fragment {
     private static final int PICK_IMAGE_REQUEST = 101;
 
     private ImageView ivProfilePic;
-    private TextView tvName, tvEmail;
+    private TextView tvProfileName, tvProfileEmail;
     private TextInputLayout tilFirstName, tilLastName, tilPhone,
             tilOldPass, tilNewPass, tilConfirmPass;
     private TextInputEditText etFirstName, etLastName, etPhone,
@@ -61,8 +61,8 @@ public class ProfileFragment extends Fragment {
 
         // Init views
         ivProfilePic = view.findViewById(R.id.ivProfilePic);
-        tvName = view.findViewById(R.id.tvProfileName);
-        tvEmail = view.findViewById(R.id.tvProfileEmail);
+        tvProfileName = view.findViewById(R.id.tvProfileName);
+        tvProfileEmail = view.findViewById(R.id.tvProfileEmail);
 
         tilFirstName = view.findViewById(R.id.tilFirstName);
         tilLastName = view.findViewById(R.id.tilLastName);
@@ -101,12 +101,10 @@ public class ProfileFragment extends Fragment {
             String firstName = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_FIRST_NAME));
             String lastName = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_LAST_NAME));
             String phone = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_PHONE));
-            String gender = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_GENDER));
-            String category = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_CATEGORY));
             profilePicPath = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_PROFILE_PIC));
 
-            tvName.setText(firstName + " " + lastName);
-            tvEmail.setText(currentEmail);
+            tvProfileName.setText(firstName + " " + lastName);
+            tvProfileEmail.setText(currentEmail);
 
             etFirstName.setText(firstName);
             etLastName.setText(lastName);
@@ -150,7 +148,7 @@ public class ProfileFragment extends Fragment {
 
         boolean ok = dbHelper.updateUser(currentEmail, first, last, phone);
         if (ok) {
-            tvName.setText(first + " " + last);
+            tvProfileName.setText(first + " " + last);
             Toast.makeText(requireContext(), "Profile updated successfully ✓", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(requireContext(), "Update failed. Try again.", Toast.LENGTH_SHORT).show();
@@ -214,9 +212,7 @@ public class ProfileFragment extends Fragment {
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), imageUri);
                 ivProfilePic.setImageBitmap(bitmap);
-                // Save path to database
                 profilePicPath = imageUri.toString();
-                // Update profile pic in DB (would need to add this method)
                 Toast.makeText(requireContext(), "Profile picture updated!", Toast.LENGTH_SHORT).show();
             } catch (IOException e) {
                 e.printStackTrace();

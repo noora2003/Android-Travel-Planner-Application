@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#EEEEEE">
+    android:background="#ede9e6">
 
     <!-- Header -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:background="#1F6F5F"
+        android:orientation="vertical"
         android:padding="20dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="My Favorites"
+            android:text="♡ My Favorites"
             android:textColor="#EEEEEE"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -27,7 +28,9 @@
             android:layout_height="wrap_content"
             android:textColor="#AA6FCF97"
             android:textSize="13sp"
-            android:layout_marginTop="4dp" />
+            android:layout_marginTop="4dp"
+            android:text="Your saved destinations" />
+
     </LinearLayout>
 
     <!-- RecyclerView -->
@@ -39,7 +42,7 @@
         android:padding="16dp"
         android:clipToPadding="false" />
 
-    <!-- Empty state -->
+    <!-- Empty State -->
     <LinearLayout
         android:id="@+id/emptyState"
         android:layout_width="match_parent"
@@ -47,31 +50,37 @@
         android:layout_weight="1"
         android:orientation="vertical"
         android:gravity="center"
-        android:visibility="gone">
+        android:visibility="gone"
+        android:padding="32dp">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_favorite_border"
+            android:background="@drawable/circle_green_bg"
+            android:padding="20dp"
+            android:contentDescription="No favorites"
+            app:tint="#EEEEEE" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="♡"
-            android:textColor="#2FA084"
-            android:textSize="48sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:text="No favorites yet"
             android:textColor="#1F6F5F"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginTop="8dp" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="Tap the heart icon on any trip to save it here"
             android:textColor="#888880"
             android:textSize="13sp"
-            android:layout_marginTop="4dp" />
+            android:gravity="center"
+            android:textAlignment="center" />
+
     </LinearLayout>
 
 </LinearLayout>

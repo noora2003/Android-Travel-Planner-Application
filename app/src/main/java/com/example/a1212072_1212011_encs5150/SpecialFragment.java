@@ -26,7 +26,7 @@ public class SpecialFragment extends Fragment implements TripAdapter.OnTripClick
     private LinearLayout emptyState;
     private TextView tvSpecialTitle;
     private DatabaseHelper dbHelper;
-    private int currentUserId;
+    private String loggedInEmail;
     private List<TripModel> specialList;
     private TripAdapter adapter;
 
@@ -46,8 +46,7 @@ public class SpecialFragment extends Fragment implements TripAdapter.OnTripClick
         dbHelper = new DatabaseHelper(requireContext());
         SharedPreferences prefs = requireContext()
                 .getSharedPreferences("TravelPlannerPrefs", MODE_PRIVATE);
-        String email = prefs.getString("logged_in_email", "");
-        currentUserId = dbHelper.getUserIdByEmail(email);
+        loggedInEmail = prefs.getString("logged_in_email", "");
 
         specialList = new ArrayList<>();
 
@@ -67,8 +66,9 @@ public class SpecialFragment extends Fragment implements TripAdapter.OnTripClick
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 double rating = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_RATING));
-                // Special: rating >= 4.7 OR price < 300 (deals)
                 double price = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_PRICE));
+
+                // Special: rating >= 4.7 OR price < 300 (deals)
                 if (rating >= 4.7 || price < 300) {
                     int tripId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_TRIP_ID));
                     TripModel trip = new TripModel(
@@ -81,7 +81,8 @@ public class SpecialFragment extends Fragment implements TripAdapter.OnTripClick
                             cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_DESCRIPTION)),
                             cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_IMAGE))
                     );
-                    trip.setFavorite(dbHelper.isFavorite(currentUserId, tripId));
+                    // Use String email for favorites
+                    trip.setFavorite(dbHelper.isFavorite(loggedInEmail, tripId));
                     specialList.add(trip);
                 }
             }
@@ -111,13 +112,13 @@ public class SpecialFragment extends Fragment implements TripAdapter.OnTripClick
 
     @Override
     public void onFavoriteClick(TripModel trip, int position) {
-        boolean isFav = dbHelper.isFavorite(currentUserId, trip.getId());
+        boolean isFav = dbHelper.isFavorite(loggedInEmail, trip.getId());
         if (isFav) {
-            dbHelper.removeFavorite(currentUserId, trip.getId());
+            dbHelper.removeFavorite(loggedInEmail, trip.getId());
             trip.setFavorite(false);
             Toast.makeText(requireContext(), "Removed from favorites", Toast.LENGTH_SHORT).show();
         } else {
-            dbHelper.addFavorite(currentUserId, trip.getId());
+            dbHelper.addFavorite(loggedInEmail, trip.getId());
             trip.setFavorite(true);
             Toast.makeText(requireContext(), "Added to favorites ♡", Toast.LENGTH_SHORT).show();
         }
@@ -126,8 +127,9 @@ public class SpecialFragment extends Fragment implements TripAdapter.OnTripClick
 
     @Override
     public void onReserveClick(TripModel trip) {
+        // Use String email for ReservationDialog
         ReservationDialog dialog = new ReservationDialog(
-                requireContext(), trip, currentUserId, dbHelper);
+                requireContext(), trip, loggedInEmail, dbHelper);
         dialog.show();
     }
 }

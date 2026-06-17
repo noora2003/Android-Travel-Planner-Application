@@ -6,36 +6,42 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
+import static android.content.Context.MODE_PRIVATE;
 
 public class FavoritesFragment extends Fragment implements TripAdapter.OnTripClickListener {
 
     private RecyclerView rvFavorites;
+    private LinearLayout emptyState;
+    private TextView tvFavCount;
     private TripAdapter adapter;
     private List<TripModel> favoriteList = new ArrayList<>();
     private DatabaseHelper dbHelper;
-    private TextView tvEmpty;
     private String loggedInEmail;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_favorites, container, false);
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        dbHelper    = new DatabaseHelper(requireContext());
+        dbHelper = new DatabaseHelper(requireContext());
         rvFavorites = view.findViewById(R.id.rvFavorites);
-        tvEmpty     = view.findViewById(R.id.tvFavEmpty);
+        emptyState = view.findViewById(R.id.emptyState);
+        tvFavCount = view.findViewById(R.id.tvFavCount);
 
         SharedPreferences prefs = requireActivity()
                 .getSharedPreferences("TravelPlannerPrefs", requireActivity().MODE_PRIVATE);
@@ -54,17 +60,17 @@ public class FavoritesFragment extends Fragment implements TripAdapter.OnTripCli
 
         if (cursor != null) {
             while (cursor.moveToNext()) {
-                int    id          = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_TRIP_ID));
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_TRIP_ID));
                 String destination = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_DESTINATION));
-                String country     = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_COUNTRY));
-                int    duration    = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_DURATION));
-                double price       = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_PRICE));
-                double rating      = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_RATING));
+                String country = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_COUNTRY));
+                int duration = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_DURATION));
+                double price = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_PRICE));
+                double rating = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_RATING));
                 String description = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_DESCRIPTION));
-                String image       = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_IMAGE));
+                String image = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_IMAGE));
 
                 TripModel trip = new TripModel(id, destination, country, duration, price, rating, description, image);
-                trip.setFavorite(true); // already favorite
+                trip.setFavorite(true);
                 favoriteList.add(trip);
             }
             cursor.close();
@@ -72,21 +78,21 @@ public class FavoritesFragment extends Fragment implements TripAdapter.OnTripCli
 
         adapter.updateList(favoriteList);
         updateEmptyState();
+        tvFavCount.setText(favoriteList.size() + " favorites");
     }
 
     private void updateEmptyState() {
         if (favoriteList.isEmpty()) {
-            tvEmpty.setVisibility(View.VISIBLE);
             rvFavorites.setVisibility(View.GONE);
+            emptyState.setVisibility(View.VISIBLE);
         } else {
-            tvEmpty.setVisibility(View.GONE);
             rvFavorites.setVisibility(View.VISIBLE);
+            emptyState.setVisibility(View.GONE);
         }
     }
 
     @Override
     public void onTripClick(TripModel trip) {
-        // Open TripDetailFragment
         TripDetailFragment detailFragment = TripDetailFragment.newInstance(trip);
         requireActivity().getSupportFragmentManager()
                 .beginTransaction()
@@ -97,17 +103,16 @@ public class FavoritesFragment extends Fragment implements TripAdapter.OnTripCli
 
     @Override
     public void onFavoriteClick(TripModel trip, int position) {
-        // Remove from favorites
         dbHelper.removeFavorite(loggedInEmail, trip.getId());
         favoriteList.remove(position);
         adapter.notifyItemRemoved(position);
         updateEmptyState();
+        tvFavCount.setText(favoriteList.size() + " favorites");
         Toast.makeText(requireContext(), "Removed from favorites", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onReserveClick(TripModel trip) {
-        // Open reservation dialog directly from favorites
         ReservationDialog dialog = new ReservationDialog(
                 requireContext(), trip, loggedInEmail, dbHelper);
         dialog.show();
