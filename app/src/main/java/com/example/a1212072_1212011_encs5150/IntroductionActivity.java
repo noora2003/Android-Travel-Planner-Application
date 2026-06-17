@@ -26,7 +26,7 @@ public class IntroductionActivity extends AppCompatActivity {
     private DatabaseHelper dbHelper;
 
     // ⚠ Replace this URL with your actual REST API URL
-    private static final String API_URL = "https://mocki.io/v1/c1ab722d-ade3-4c76-8971-33932b84562d";
+    private static final String API_URL = "https://mocki.io/v1/283816d0-2bd8-4e87-9d9c-a4771e50b820";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
