@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:layout_marginBottom="16dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="#1F6F5F">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Full card background image -->
+        <ImageView
+            android:id="@+id/ivTripImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:contentDescription="Trip image" />
+
+        <!-- Dark gradient overlay -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/card_gradient_overlay" />
+
+        <!-- Number badge top left -->
+        <TextView
+            android:id="@+id/tvNumber"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_margin="12dp"
+            android:layout_gravity="top|start"
+            android:gravity="center"
+            android:background="@drawable/number_badge_bg"
+            android:textColor="#EEEEEE"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <!-- Favorite label top right -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_margin="12dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/favorite_label_bg"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Favorite"
+                android:textColor="#EEEEEE"
+                android:textSize="10sp"
+                android:layout_marginEnd="4dp" />
+
+            <ImageView
+                android:id="@+id/ivFavorite"
+                android:layout_width="11dp"
+                android:layout_height="16dp"
+                android:contentDescription="Favorite"
+                android:src="@drawable/ic_favorite_border" />
+        </LinearLayout>
+
+        <!-- Bottom content -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="vertical"
+            android:padding="14dp">
+
+            <!-- Destination -->
+            <TextView
+                android:id="@+id/tvDestination"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#EEEEEE"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <!-- Country -->
+            <TextView
+                android:id="@+id/tvCountry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#BBEEEEEE"
+                android:textSize="12sp"
+                android:layout_marginBottom="6dp" />
+
+            <!-- Rating + Price + Reserve -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#6FCF97"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvPriceDuration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#EEEEEE"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <!-- Reserve Button -->
+                <Button
+                    android:id="@+id/btnReserve"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:backgroundTint="#E7E1B1"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:text="RESERVE NOW"
+                    android:textColor="#1F6F5F"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+</androidx.cardview.widget.CardView>

@@ -17,8 +17,8 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="#1F6F5F"
-            app:titleTextColor="#EEEEEE"
+            android:background="#ede9e6"
+            app:titleTextColor="#1F6F5F"
             app:title="Home" />
 
         <!-- Fragment container — all fragments load here -->

@@ -66,7 +66,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         // Travel category options
         String[] categories = {"Select Category", "Adventure", "Beach", "Cultural",
-                "City Break", "Nature", "Luxury", "Budget"};
+                 "Luxury", "Budget"};
         ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_item, categories);
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
