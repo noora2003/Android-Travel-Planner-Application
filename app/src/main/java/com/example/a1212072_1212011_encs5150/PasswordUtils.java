@@ -4,7 +4,6 @@ import java.security.NoSuchAlgorithmException;
 
 public class PasswordUtils {
 
-    // Hash password using SHA-256 — used for both storing and checking
     public static String hashPassword(String password) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -16,11 +15,10 @@ public class PasswordUtils {
             return sb.toString();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-            return password; // fallback (should never happen)
+            return password;
         }
     }
 
-    // Validate password rules for registration
     public static boolean isPasswordValid(String password) {
         if (password.length() < 6) return false;
 

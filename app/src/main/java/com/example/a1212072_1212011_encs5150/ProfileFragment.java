@@ -59,7 +59,6 @@ public class ProfileFragment extends Fragment {
                 .getSharedPreferences("TravelPlannerPrefs", MODE_PRIVATE);
         currentEmail = prefs.getString("logged_in_email", "");
 
-        // Init views
         ivProfilePic = view.findViewById(R.id.ivProfilePic);
         tvProfileName = view.findViewById(R.id.tvProfileName);
         tvProfileEmail = view.findViewById(R.id.tvProfileEmail);
@@ -84,7 +83,6 @@ public class ProfileFragment extends Fragment {
 
         loadUserData();
 
-        // Animations for buttons
         btnSaveProfile.startAnimation(slideUp);
         btnChangePass.startAnimation(slideUp);
 
@@ -110,7 +108,6 @@ public class ProfileFragment extends Fragment {
             etLastName.setText(lastName);
             etPhone.setText(phone);
 
-            // Load profile picture if exists
             if (profilePicPath != null && !profilePicPath.isEmpty()) {
                 Glide.with(requireContext())
                         .load(profilePicPath)

@@ -61,7 +61,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void attemptLogin() {
-        // Clear previous errors
         emailLayout.setError(null);
         passwordLayout.setError(null);
         tvError.setVisibility(View.GONE);
@@ -69,7 +68,6 @@ public class LoginActivity extends AppCompatActivity {
         String email    = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
 
-        // Validate inputs
         if (TextUtils.isEmpty(email)) {
             emailLayout.setError("Email is required");
             return;
@@ -83,10 +81,8 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        // Hash the password the same way it was stored during registration
         String hashedPassword = PasswordUtils.hashPassword(password);
 
-        // Check credentials in DB
         boolean isAdmin = email.equals("admin@admin.com") && password.equals("Admin123!");
         boolean isValid = isAdmin || dbHelper.checkUser(email, hashedPassword);
 
@@ -100,7 +96,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    // Remember Me saves email using SharedPreferences + password encrypted
     private void handleRememberMe(String email) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         if (cbRememberMe.isChecked()) {
@@ -114,7 +109,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void navigateAfterLogin(boolean isAdmin, String email) {
-        // Save the currently logged-in user email for use across the app
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("logged_in_email", email);
         editor.apply();

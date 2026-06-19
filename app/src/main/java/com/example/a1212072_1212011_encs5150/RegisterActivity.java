@@ -29,7 +29,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         dbHelper = new DatabaseHelper(this);
 
-        // Init views
         etFirstName           = findViewById(R.id.etFirstName);
         etLastName            = findViewById(R.id.etLastName);
         etEmail               = findViewById(R.id.etEmail);
@@ -57,14 +56,12 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void setupSpinners() {
-        // Gender options
         String[] genders = {"Select Gender", "Male", "Female"};
         ArrayAdapter<String> genderAdapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_item, genders);
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerGender.setAdapter(genderAdapter);
 
-        // Travel category options
         String[] categories = {"Select Category", "Adventure", "Beach", "Cultural",
                  "Luxury", "Budget"};
         ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(
@@ -74,7 +71,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void attemptRegister() {
-        // Clear all previous errors
         firstNameLayout.setError(null);
         lastNameLayout.setError(null);
         emailLayout.setError(null);
@@ -82,7 +78,6 @@ public class RegisterActivity extends AppCompatActivity {
         passwordLayout.setError(null);
         confirmPasswordLayout.setError(null);
 
-        // Get values
         String firstName   = etFirstName.getText().toString().trim();
         String lastName    = etLastName.getText().toString().trim();
         String email       = etEmail.getText().toString().trim();
@@ -92,7 +87,6 @@ public class RegisterActivity extends AppCompatActivity {
         String gender      = spinnerGender.getSelectedItem().toString();
         String category    = spinnerCategory.getSelectedItem().toString();
 
-        //  Validate all fields
 
         boolean hasError = false;
 
@@ -134,13 +128,11 @@ public class RegisterActivity extends AppCompatActivity {
 
         if (hasError) return;
 
-        //  Check email not already registered
         if (dbHelper.emailExists(email)) {
             emailLayout.setError("This email is already registered");
             return;
         }
 
-        //  Hash password and insert user
         String hashedPassword = PasswordUtils.hashPassword(password);
         boolean success = dbHelper.insertUser(
                 email, firstName, lastName,
@@ -151,7 +143,6 @@ public class RegisterActivity extends AppCompatActivity {
                     "Account created successfully! Please log in.",
                     android.widget.Toast.LENGTH_LONG).show();
 
-            // Redirect to Login screen
             Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
