@@ -40,11 +40,9 @@ public class AdminDashboardFragment extends Fragment {
         Button   btnQuickTrips   = view.findViewById(R.id.btnQuickTrips);
         Button   btnQuickRes     = view.findViewById(R.id.btnQuickReservations);
 
-        // التاريخ الحالي
         String date = new SimpleDateFormat("EEEE, d MMMM yyyy", Locale.ENGLISH).format(new Date());
         tvDate.setText(date);
 
-        // قراءة الإحصائيات
         int userCount = 0, tripCount = 0, resCount = 0;
 
         Cursor cU = db.getReadableDatabase().rawQuery(
@@ -62,15 +60,12 @@ public class AdminDashboardFragment extends Fragment {
         if (cR.moveToFirst()) resCount = cR.getInt(0);
         cR.close();
 
-        // Animate counter from 0 to target
         animateCount(tvUsers, userCount);
         animateCount(tvTrips, tripCount);
         animateCount(tvReservations, resCount);
 
-        // Fade-in animation on cards
         view.startAnimation(AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in));
 
-        // Quick action buttons → navigate to matching fragment
         btnQuickUsers.setOnClickListener(v -> {
             btnQuickUsers.startAnimation(AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in));
             if (getActivity() instanceof AdminHomeActivity) {
@@ -96,7 +91,6 @@ public class AdminDashboardFragment extends Fragment {
         });
     }
 
-    // Counter animation: 0 → target in ~600ms
     private void animateCount(TextView tv, int target) {
         int steps = 20;
         long delay = 600L / steps;
