@@ -25,14 +25,12 @@ public class ContactFragment extends Fragment {
         Button btnLocate = view.findViewById(R.id.btnLocate);
         Button btnEmail  = view.findViewById(R.id.btnEmail);
 
-        // Open phone dialer with predefined number
         btnCall.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_DIAL);
             intent.setData(Uri.parse("tel:+970599000000"));
             startActivity(intent);
         });
 
-        // Open Google Maps with predefined location (Birzeit University)
         btnLocate.setOnClickListener(v -> {
             Uri geoUri = Uri.parse("geo:31.9784,35.2385?q=Birzeit+University");
             Intent intent = new Intent(Intent.ACTION_VIEW, geoUri);
@@ -40,7 +38,6 @@ public class ContactFragment extends Fragment {
             startActivity(intent);
         });
 
-        // Open Gmail / email app with predefined address
         btnEmail.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_SENDTO);
             intent.setData(Uri.parse("mailto:support@travelplanner.com"));

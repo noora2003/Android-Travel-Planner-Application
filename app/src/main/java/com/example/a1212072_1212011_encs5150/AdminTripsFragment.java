@@ -105,7 +105,6 @@ public class AdminTripsFragment extends Fragment {
             holder.tvSub2.setText(row.description.length() > 55
                     ? row.description.substring(0, 55) + "…" : row.description);
 
-            // Avatar: أول حرف من الوجهة
             if (holder.tvAvatar != null && row.destination.length() > 0) {
                 holder.tvAvatar.setText(String.valueOf(row.destination.charAt(0)).toUpperCase());
             }

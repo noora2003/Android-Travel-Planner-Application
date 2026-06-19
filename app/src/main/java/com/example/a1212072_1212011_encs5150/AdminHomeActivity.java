@@ -99,7 +99,6 @@ public class AdminHomeActivity extends AppCompatActivity
         return true;
     }
 
-    // ✅ Changed to PUBLIC so AdminDashboardFragment can call it
     public void loadFragment(Fragment fragment, String title) {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frameContainer, fragment)

@@ -42,7 +42,6 @@ public class AdminUsersFragment extends Fragment {
 
         tvCount = view.findViewById(R.id.tvAdminListCount);
 
-        // إخفاء زر الإضافة — المستخدمون لا يُضافون يدوياً
         view.findViewById(R.id.btnAddItem).setVisibility(View.GONE);
 
         rv = view.findViewById(R.id.rvAdminList);
@@ -91,7 +90,6 @@ public class AdminUsersFragment extends Fragment {
             h.tvSub2.setText((row.phone != null && !row.phone.isEmpty() ? row.phone : "—")
                     + "  ·  " + (row.gender != null ? row.gender : "—"));
 
-            // Avatar: أول حرف من الاسم
             if (h.tvAvatar != null && row.name.length() > 0) {
                 h.tvAvatar.setText(String.valueOf(row.name.charAt(0)).toUpperCase());
             }
