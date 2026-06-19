@@ -33,20 +33,16 @@ public class HomeActivity extends AppCompatActivity
 
         dbHelper = new DatabaseHelper(this);
 
-        // Get logged in user email
         SharedPreferences prefs = getSharedPreferences("TravelPlannerPrefs", MODE_PRIVATE);
         loggedInEmail = prefs.getString("logged_in_email", "");
 
-        // Setup toolbar
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Setup drawer
         drawerLayout   = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigationView);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // Hamburger icon toggle
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar,
                 R.string.navigation_drawer_open,
@@ -54,10 +50,8 @@ public class HomeActivity extends AppCompatActivity
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        // Set nav header user info
         setupNavHeader();
 
-        // Load Home fragment by default
         if (savedInstanceState == null) {
             loadFragment(new HomeFragment(), "Home");
             navigationView.setCheckedItem(R.id.nav_home);
@@ -83,7 +77,6 @@ public class HomeActivity extends AppCompatActivity
         TextView navUserName  = headerView.findViewById(R.id.navUserName);
         TextView navUserEmail = headerView.findViewById(R.id.navUserEmail);
 
-        // Get user name from database
         Cursor cursor = dbHelper.getUserByEmail(loggedInEmail);
         if (cursor != null && cursor.moveToFirst()) {
             String firstName = cursor.getString(
@@ -157,26 +150,16 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void logout() {
-        // Clear logged in session
         SharedPreferences.Editor editor = getSharedPreferences(
                 "TravelPlannerPrefs", MODE_PRIVATE).edit();
         editor.remove("logged_in_email");
         editor.apply();
 
-        // Go back to Login
         Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }
 
-  //  @Override
-//    public void onBackPressed() {
-//        // Close drawer on back press if open
-//        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-//            drawerLayout.closeDrawer(GravityCompat.START);
-//        } else {
-//            super.onBackPressed();
-//        }
-//    }
+
 }

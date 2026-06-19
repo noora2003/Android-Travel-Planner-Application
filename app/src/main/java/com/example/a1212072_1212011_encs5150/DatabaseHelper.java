@@ -10,19 +10,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME    = "TravelPlanner.db";
     private static final int    DATABASE_VERSION = 3;
 
-    // Users table
     public static final String TABLE_USERS       = "users";
     public static final String COL_USER_ID       = "id";
     public static final String COL_EMAIL         = "email";
     public static final String COL_FIRST_NAME    = "first_name";
     public static final String COL_LAST_NAME     = "last_name";
-    public static final String COL_PASSWORD      = "password";   // stored as SHA-256 hash
+    public static final String COL_PASSWORD      = "password";
     public static final String COL_GENDER        = "gender";
     public static final String COL_CATEGORY      = "category";
     public static final String COL_PHONE         = "phone";
     public static final String COL_PROFILE_PIC   = "profile_pic";
 
-    // Trips table
     public static final String TABLE_TRIPS      = "trips";
     public static final String COL_TRIP_ID      = "id";
     public static final String COL_DESTINATION  = "destination";
@@ -33,12 +31,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_DESCRIPTION  = "description";
     public static final String COL_IMAGE        = "image";
 
-    // Favorites table
     public static final String TABLE_FAVORITES  = "favorites";
     public static final String COL_FAV_ID       = "id";
     public static final String COL_FAV_EMAIL    = "user_email";
     public static final String COL_FAV_TRIP_ID  = "trip_id";
-    //  Reservations table
     public static final String TABLE_RESERVATIONS    = "reservations";
     public static final String COL_RES_ID            = "id";
     public static final String COL_RES_EMAIL         = "user_email";
@@ -121,8 +117,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    //  User methods
-    // Returns true if email+hashedPassword match a row in the DB
+
     public boolean checkUser(String email, String hashedPassword) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(
@@ -137,7 +132,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return exists;
     }
 
-    // Returns true if an account with this email already exists
     public boolean emailExists(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(
@@ -152,7 +146,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return exists;
     }
 
-    // Insert a new user — password must already be hashed before calling this
     public boolean insertUser(String email, String firstName, String lastName,
                               String hashedPassword, String gender,
                               String category, String phone) {
@@ -170,7 +163,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    // Get a user's full info by email (for profile screen)
     public Cursor getUserByEmail(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.query(
@@ -181,7 +173,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null, null, null);
     }
 
-    // Update user profile fields
     public boolean updateUser(String email, String firstName, String lastName, String phone) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -193,7 +184,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rows > 0;
     }
 
-    // Update password only
     public boolean updatePassword(String email, String newHashedPassword) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -226,7 +216,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null, null, null, null);
     }
 
-    //  FAVORITES METHODS
 
     public void addFavorite(String email, int tripId) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -264,7 +253,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery(query, new String[]{email});
     }
 
-    //  RESERVATIONS METHODS
 
     public boolean insertReservation(String email, int tripId, String tripName,
                                      int quantity, String type, String date,
@@ -299,7 +287,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    //  ADMIN METHODS
 
     public Cursor getAllUsers() {
         SQLiteDatabase db = this.getReadableDatabase();

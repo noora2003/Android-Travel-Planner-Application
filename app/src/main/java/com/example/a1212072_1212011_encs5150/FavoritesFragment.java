@@ -135,7 +135,6 @@ public class FavoritesFragment extends Fragment {
                 .commit();
     }
 
-    // استخدم الـ dialog الموجود R.layout.dialog_reservation
     private void showReservationDialog(TripModel trip) {
         View dialogView = LayoutInflater.from(requireContext())
                 .inflate(R.layout.dialog_reservation, null);
