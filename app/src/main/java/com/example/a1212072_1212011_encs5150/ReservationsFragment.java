@@ -60,7 +60,6 @@ public class ReservationsFragment extends Fragment {
             String type       = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_RES_TYPE));
             double totalPrice = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_RES_TOTAL_PRICE));
 
-            // Build card programmatically
             CardView card = new CardView(requireContext());
             LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -75,7 +74,6 @@ public class ReservationsFragment extends Fragment {
             inner.setOrientation(LinearLayout.VERTICAL);
             inner.setPadding(40, 36, 40, 36);
 
-            // Trip name row
             LinearLayout topRow = new LinearLayout(requireContext());
             topRow.setOrientation(LinearLayout.HORIZONTAL);
 
@@ -101,7 +99,6 @@ public class ReservationsFragment extends Fragment {
             topRow.addView(tvName);
             topRow.addView(tvStatus);
 
-            // Divider
             View divider = new View(requireContext());
             LinearLayout.LayoutParams divParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, 1);
@@ -109,7 +106,6 @@ public class ReservationsFragment extends Fragment {
             divider.setLayoutParams(divParams);
             divider.setBackgroundColor(0xFFEEEEEE);
 
-            // Details
             TextView tvDetails = new TextView(requireContext());
             tvDetails.setText(
                     "📅  Date: " + date + "\n" +

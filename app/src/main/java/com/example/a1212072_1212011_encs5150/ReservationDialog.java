@@ -40,7 +40,6 @@ public class ReservationDialog {
         dialog.getWindow().setBackgroundDrawableResource(
                 android.R.color.transparent);
 
-        // Init views
         TextView tvTripName   = view.findViewById(R.id.tvTripName);
         TextView tvQuantity   = view.findViewById(R.id.tvQuantity);
         TextView tvTotalPrice = view.findViewById(R.id.tvTotalPrice);
@@ -52,7 +51,6 @@ public class ReservationDialog {
 
         tvTripName.setText(trip.getDestination() + " · " + trip.getCountry());
 
-        // Reservation types
         String[] types = {"Standard", "Premium", "VIP"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 context, android.R.layout.simple_spinner_item, types);

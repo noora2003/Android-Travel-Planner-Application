@@ -44,30 +44,27 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     public void onBindViewHolder(@NonNull TripViewHolder holder, int position) {
         TripModel trip = tripList.get(position);
 
-        // Number badge
+
         holder.tvNumber.setText(String.valueOf(position + 1));
 
-        // Text fields
         holder.tvDestination.setText(trip.getDestination());
         holder.tvCountry.setText(trip.getCountry());
         holder.tvRating.setText("★ " + trip.getRating());
         holder.tvPriceDuration.setText("$" + (int) trip.getPrice()
                 + "  |  " + trip.getDurationDays() + " Days");
 
-        // Load image using Glide
         Glide.with(context)
                 .load(trip.getImage())
                 .centerCrop()
                 .placeholder(R.drawable.ic_plane)
                 .into(holder.ivTripImage);
 
-        // Favorite icon
+
         holder.ivFavorite.setImageResource(
                 trip.isFavorite()
                         ? R.drawable.ic_favorite_filled
                         : R.drawable.ic_favorite_border);
 
-        // Click listeners
         holder.itemView.setOnClickListener(v -> listener.onTripClick(trip));
         holder.ivFavorite.setOnClickListener(v ->
                 listener.onFavoriteClick(trip, holder.getAdapterPosition()));
