@@ -33,7 +33,7 @@ public class SpecialSectionFragment extends Fragment {
     private RecyclerView rvSpecial;
     private LinearLayout emptyState;
     private DatabaseHelper dbHelper;
-    private int currentUserId;
+    private String loggedInEmail;
     private List<TripModel> specialList;
     private TripAdapter adapter;
 
@@ -47,32 +47,30 @@ public class SpecialSectionFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        rvSpecial  = view.findViewById(R.id.rvSpecial);
+        rvSpecial = view.findViewById(R.id.rvSpecial);
         emptyState = view.findViewById(R.id.emptyStateSpecial);
 
         dbHelper = new DatabaseHelper(requireContext());
         SharedPreferences prefs = requireContext().getSharedPreferences("TravelPlannerPrefs", MODE_PRIVATE);
-        String email = prefs.getString("logged_in_email", "");
-        currentUserId = dbHelper.getUserIdByEmail(email);
+        loggedInEmail = prefs.getString("logged_in_email", "");
 
         specialList = new ArrayList<>();
 
         adapter = new TripAdapter(requireContext(), specialList, new TripAdapter.OnTripClickListener() {
             @Override
             public void onTripClick(TripModel trip) {
-                // فتح التفاصيل ✓
                 openTripDetail(trip.getId());
             }
 
             @Override
             public void onFavoriteClick(TripModel trip, int position) {
-                boolean isFav = dbHelper.isFavorite(currentUserId, trip.getId());
+                boolean isFav = dbHelper.isFavorite(loggedInEmail, trip.getId());
                 if (isFav) {
-                    dbHelper.removeFavorite(currentUserId, trip.getId());
+                    dbHelper.removeFavorite(loggedInEmail, trip.getId());
                     trip.setFavorite(false);
                     Toast.makeText(requireContext(), "Removed from favorites", Toast.LENGTH_SHORT).show();
                 } else {
-                    dbHelper.addFavorite(currentUserId, trip.getId());
+                    dbHelper.addFavorite(loggedInEmail, trip.getId());
                     trip.setFavorite(true);
                     Toast.makeText(requireContext(), "Added to favorites ♡", Toast.LENGTH_SHORT).show();
                 }
@@ -109,7 +107,7 @@ public class SpecialSectionFragment extends Fragment {
                             cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_DESCRIPTION)),
                             cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_IMAGE))
                     );
-                    trip.setFavorite(dbHelper.isFavorite(currentUserId, trip.getId()));
+                    trip.setFavorite(dbHelper.isFavorite(loggedInEmail, tripId));
                     specialList.add(trip);
                 }
             }
@@ -130,28 +128,49 @@ public class SpecialSectionFragment extends Fragment {
         TripDetailFragment detailFragment = TripDetailFragment.newInstance(tripId);
         requireActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frameContainer, detailFragment)
+                .replace(R.id.fragment_container, detailFragment)
                 .addToBackStack(null)
                 .commit();
     }
 
     private void showReservationDialog(TripModel trip) {
         View dialogView = LayoutInflater.from(requireContext())
-                .inflate(R.layout.dialog_reserve_form, null);
+                .inflate(R.layout.dialog_reservation, null);
 
-        TextView tvTitle     = dialogView.findViewById(R.id.tvReserveTitle);
-        EditText etQuantity  = dialogView.findViewById(R.id.etQuantity);
-        Spinner  spinnerType = dialogView.findViewById(R.id.spinnerReserveType);
-        Button   btnConfirm  = dialogView.findViewById(R.id.btnConfirmReserve);
-        Button   btnCancel   = dialogView.findViewById(R.id.btnCancelReserve);
+        TextView tvTripName = dialogView.findViewById(R.id.tvTripName);
+        TextView tvQuantity = dialogView.findViewById(R.id.tvQuantity);
+        TextView tvTotalPrice = dialogView.findViewById(R.id.tvTotalPrice);
+        TextView btnMinus = dialogView.findViewById(R.id.btnMinus);
+        TextView btnPlus = dialogView.findViewById(R.id.btnPlus);
+        Spinner spinnerType = dialogView.findViewById(R.id.spinnerReservationType);
+        Button btnConfirm = dialogView.findViewById(R.id.btnConfirm);
+        Button btnCancel = dialogView.findViewById(R.id.btnCancel);
 
-        if (tvTitle != null) tvTitle.setText("Reserve: " + trip.getDestination());
+        if (tvTripName != null) tvTripName.setText(trip.getDestination() + " · " + trip.getCountry());
 
-        String[] types = {"Standard", "Premium", "Group", "Honeymoon"};
+        String[] types = {"Standard", "Premium", "VIP"};
         ArrayAdapter<String> typeAdapter = new ArrayAdapter<>(
                 requireContext(), android.R.layout.simple_spinner_item, types);
         typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerType.setAdapter(typeAdapter);
+
+        final int[] quantity = {1};
+
+        btnMinus.setOnClickListener(v -> {
+            if (quantity[0] > 1) {
+                quantity[0]--;
+                tvQuantity.setText(String.valueOf(quantity[0]));
+                tvTotalPrice.setText("$" + (int) (trip.getPrice() * quantity[0]));
+            }
+        });
+
+        btnPlus.setOnClickListener(v -> {
+            if (quantity[0] < 20) {
+                quantity[0]++;
+                tvQuantity.setText(String.valueOf(quantity[0]));
+                tvTotalPrice.setText("$" + (int) (trip.getPrice() * quantity[0]));
+            }
+        });
 
         AlertDialog dialog = new AlertDialog.Builder(requireContext())
                 .setView(dialogView)
@@ -159,21 +178,16 @@ public class SpecialSectionFragment extends Fragment {
         dialog.show();
 
         btnConfirm.setOnClickListener(v -> {
-            String qtyStr = etQuantity.getText().toString().trim();
-            if (qtyStr.isEmpty()) { etQuantity.setError("Required"); return; }
-            int qty;
-            try {
-                qty = Integer.parseInt(qtyStr);
-                if (qty <= 0) throw new NumberFormatException();
-            } catch (NumberFormatException e) {
-                etQuantity.setError("Enter a valid number");
-                return;
-            }
             String type = spinnerType.getSelectedItem().toString();
             String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-            boolean ok = dbHelper.insertReservation(currentUserId, trip.getId(), date, qty, type, "active");
+            double total = trip.getPrice() * quantity[0];
+
+            boolean ok = dbHelper.insertReservation(
+                    loggedInEmail, trip.getId(), trip.getDestination(),
+                    quantity[0], type, date, total, "Confirmed");
+
             Toast.makeText(requireContext(),
-                    ok ? "Reservation confirmed! ✓" : "Failed. Try again.",
+                    ok ? "Reservation confirmed for " + trip.getDestination() + "!" : "Failed. Try again.",
                     Toast.LENGTH_SHORT).show();
             if (ok) dialog.dismiss();
         });

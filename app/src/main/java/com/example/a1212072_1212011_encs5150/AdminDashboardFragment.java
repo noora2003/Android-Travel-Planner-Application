@@ -73,20 +73,26 @@ public class AdminDashboardFragment extends Fragment {
         // Quick action buttons → navigate to matching fragment
         btnQuickUsers.setOnClickListener(v -> {
             btnQuickUsers.startAnimation(AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in));
-            ((AdminHomeActivity) requireActivity())
-                    .loadFragment(new AdminUsersFragment(), "Manage Users");
+            if (getActivity() instanceof AdminHomeActivity) {
+                ((AdminHomeActivity) getActivity())
+                        .loadFragment(new AdminUsersFragment(), "Manage Users");
+            }
         });
 
         btnQuickTrips.setOnClickListener(v -> {
             btnQuickTrips.startAnimation(AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in));
-            ((AdminHomeActivity) requireActivity())
-                    .loadFragment(new AdminTripsFragment(), "Manage Trips");
+            if (getActivity() instanceof AdminHomeActivity) {
+                ((AdminHomeActivity) getActivity())
+                        .loadFragment(new AdminTripsFragment(), "Manage Trips");
+            }
         });
 
         btnQuickRes.setOnClickListener(v -> {
             btnQuickRes.startAnimation(AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in));
-            ((AdminHomeActivity) requireActivity())
-                    .loadFragment(new AdminReservationsFragment(), "View Reservations");
+            if (getActivity() instanceof AdminHomeActivity) {
+                ((AdminHomeActivity) getActivity())
+                        .loadFragment(new AdminReservationsFragment(), "View Reservations");
+            }
         });
     }
 

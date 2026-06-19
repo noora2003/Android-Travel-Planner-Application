@@ -35,7 +35,6 @@ public class SpecialFragment extends Fragment implements TripAdapter.OnTripClick
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_special, container, false);
 
-        // Animations
         Animation fadeIn = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in);
         view.startAnimation(fadeIn);
 
@@ -68,7 +67,6 @@ public class SpecialFragment extends Fragment implements TripAdapter.OnTripClick
                 double rating = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_RATING));
                 double price = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_PRICE));
 
-                // Special: rating >= 4.7 OR price < 300 (deals)
                 if (rating >= 4.7 || price < 300) {
                     int tripId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_TRIP_ID));
                     TripModel trip = new TripModel(
@@ -81,7 +79,6 @@ public class SpecialFragment extends Fragment implements TripAdapter.OnTripClick
                             cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_DESCRIPTION)),
                             cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_IMAGE))
                     );
-                    // Use String email for favorites
                     trip.setFavorite(dbHelper.isFavorite(loggedInEmail, tripId));
                     specialList.add(trip);
                 }
@@ -102,7 +99,7 @@ public class SpecialFragment extends Fragment implements TripAdapter.OnTripClick
 
     @Override
     public void onTripClick(TripModel trip) {
-        TripDetailFragment detailFragment = TripDetailFragment.newInstance(trip);
+        TripDetailFragment detailFragment = TripDetailFragment.newInstance(trip.getId());
         requireActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, detailFragment)
@@ -127,7 +124,6 @@ public class SpecialFragment extends Fragment implements TripAdapter.OnTripClick
 
     @Override
     public void onReserveClick(TripModel trip) {
-        // Use String email for ReservationDialog
         ReservationDialog dialog = new ReservationDialog(
                 requireContext(), trip, loggedInEmail, dbHelper);
         dialog.show();

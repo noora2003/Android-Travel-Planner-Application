@@ -56,7 +56,6 @@ public class AdminHomeActivity extends AppCompatActivity
             navigationView.setCheckedItem(R.id.admin_nav_dashboard);
         }
 
-
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -100,7 +99,8 @@ public class AdminHomeActivity extends AppCompatActivity
         return true;
     }
 
-    private void loadFragment(Fragment fragment, String title) {
+    // ✅ Changed to PUBLIC so AdminDashboardFragment can call it
+    public void loadFragment(Fragment fragment, String title) {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frameContainer, fragment)
                 .commit();

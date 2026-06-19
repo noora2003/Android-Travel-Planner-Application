@@ -35,13 +35,12 @@ public class TripDetailFragment extends Fragment {
 
     private TripModel trip;
     private DatabaseHelper dbHelper;
-    private int currentUserId;
+    private String loggedInEmail;
 
     private ImageView ivImage, ivFavorite, ivBack;
     private TextView tvDestination, tvCountry, tvRating, tvPrice, tvDuration, tvDescription;
     private Button btnReserve;
 
-    // Factory method — يستخدم Bundle بدل constructor مباشر
     public static TripDetailFragment newInstance(int tripId) {
         TripDetailFragment fragment = new TripDetailFragment();
         Bundle args = new Bundle();
@@ -63,22 +62,19 @@ public class TripDetailFragment extends Fragment {
         dbHelper = new DatabaseHelper(requireContext());
         SharedPreferences prefs = requireContext()
                 .getSharedPreferences("TravelPlannerPrefs", requireContext().MODE_PRIVATE);
-        String email = prefs.getString("logged_in_email", "");
-        currentUserId = dbHelper.getUserIdByEmail(email);
+        loggedInEmail = prefs.getString("logged_in_email", "");
 
-        // Init views
-        ivImage       = view.findViewById(R.id.ivDetailImage);
-        ivFavorite    = view.findViewById(R.id.ivDetailFavorite);
-        ivBack        = view.findViewById(R.id.ivBack);
+        ivImage = view.findViewById(R.id.ivDetailImage);
+        ivFavorite = view.findViewById(R.id.ivDetailFavorite);
+        ivBack = view.findViewById(R.id.ivBack);
         tvDestination = view.findViewById(R.id.tvDetailDestination);
-        tvCountry     = view.findViewById(R.id.tvDetailCountry);
-        tvRating      = view.findViewById(R.id.tvDetailRating);
-        tvPrice       = view.findViewById(R.id.tvDetailPrice);
-        tvDuration    = view.findViewById(R.id.tvDetailDuration);
+        tvCountry = view.findViewById(R.id.tvDetailCountry);
+        tvRating = view.findViewById(R.id.tvDetailRating);
+        tvPrice = view.findViewById(R.id.tvDetailPrice);
+        tvDuration = view.findViewById(R.id.tvDetailDuration);
         tvDescription = view.findViewById(R.id.tvDetailDescription);
-        btnReserve    = view.findViewById(R.id.btnDetailReserve);
+        btnReserve = view.findViewById(R.id.btnDetailReserve);
 
-        // جلب بيانات الرحلة من الـ arguments
         if (getArguments() != null) {
             int tripId = getArguments().getInt(ARG_TRIP_ID, -1);
             trip = dbHelper.getTripById(tripId);
@@ -102,62 +98,71 @@ public class TripDetailFragment extends Fragment {
         tvDuration.setText(String.valueOf(trip.getDurationDays()));
         tvDescription.setText(trip.getDescription());
 
-        // Favorite state
         refreshFavoriteIcon();
-
-        // Load image
         loadImage(trip.getImage(), ivImage);
     }
 
     private void refreshFavoriteIcon() {
-        boolean isFav = dbHelper.isFavorite(currentUserId, trip.getId());
-        ivFavorite.setColorFilter(isFav
-                ? Color.parseColor("#FFD700")
-                : Color.parseColor("#888780"));
+        boolean isFav = dbHelper.isFavorite(loggedInEmail, trip.getId());
+        ivFavorite.setColorFilter(isFav ? Color.parseColor("#FFD700") : Color.parseColor("#888780"));
     }
 
     private void setupClickListeners() {
-        // Back
-        ivBack.setOnClickListener(v ->
-                requireActivity().getSupportFragmentManager().popBackStack());
+        ivBack.setOnClickListener(v -> requireActivity().getSupportFragmentManager().popBackStack());
 
-        // Favorite toggle
         ivFavorite.setOnClickListener(v -> {
-            boolean isFav = dbHelper.isFavorite(currentUserId, trip.getId());
+            boolean isFav = dbHelper.isFavorite(loggedInEmail, trip.getId());
             if (isFav) {
-                dbHelper.removeFavorite(currentUserId, trip.getId());
+                dbHelper.removeFavorite(loggedInEmail, trip.getId());
                 Toast.makeText(requireContext(), "Removed from favorites", Toast.LENGTH_SHORT).show();
             } else {
-                dbHelper.addFavorite(currentUserId, trip.getId());
+                dbHelper.addFavorite(loggedInEmail, trip.getId());
                 Toast.makeText(requireContext(), "Added to favorites ♡", Toast.LENGTH_SHORT).show();
             }
             refreshFavoriteIcon();
         });
 
-        // Reserve
         btnReserve.setOnClickListener(v -> showReservationDialog());
     }
 
-    // ── Reservation Dialog ────────────────────────────────────────────────────
     private void showReservationDialog() {
         View dialogView = LayoutInflater.from(requireContext())
-                .inflate(R.layout.dialog_reserve_form, null);
+                .inflate(R.layout.dialog_reservation, null);
 
-        EditText etQuantity      = dialogView.findViewById(R.id.etQuantity);
-        Spinner  spinnerType     = dialogView.findViewById(R.id.spinnerReserveType);
-        Button   btnConfirm      = dialogView.findViewById(R.id.btnConfirmReserve);
-        Button   btnCancel       = dialogView.findViewById(R.id.btnCancelReserve);
+        TextView tvTripName = dialogView.findViewById(R.id.tvTripName);
+        TextView tvQuantity = dialogView.findViewById(R.id.tvQuantity);
+        TextView tvTotalPrice = dialogView.findViewById(R.id.tvTotalPrice);
+        TextView btnMinus = dialogView.findViewById(R.id.btnMinus);
+        TextView btnPlus = dialogView.findViewById(R.id.btnPlus);
+        Spinner spinnerType = dialogView.findViewById(R.id.spinnerReservationType);
+        Button btnConfirm = dialogView.findViewById(R.id.btnConfirm);
+        Button btnCancel = dialogView.findViewById(R.id.btnCancel);
 
-        // Spinner options
-        String[] types = {"Standard", "Premium", "Group", "Honeymoon"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+        if (tvTripName != null) tvTripName.setText(trip.getDestination() + " · " + trip.getCountry());
+
+        String[] types = {"Standard", "Premium", "VIP"};
+        ArrayAdapter<String> typeAdapter = new ArrayAdapter<>(
                 requireContext(), android.R.layout.simple_spinner_item, types);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerType.setAdapter(adapter);
+        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerType.setAdapter(typeAdapter);
 
-        // Set title on dialog layout
-        TextView tvTitle = dialogView.findViewById(R.id.tvReserveTitle);
-        if (tvTitle != null) tvTitle.setText("Reserve: " + trip.getDestination());
+        final int[] quantity = {1};
+
+        btnMinus.setOnClickListener(v -> {
+            if (quantity[0] > 1) {
+                quantity[0]--;
+                tvQuantity.setText(String.valueOf(quantity[0]));
+                tvTotalPrice.setText("$" + (int) (trip.getPrice() * quantity[0]));
+            }
+        });
+
+        btnPlus.setOnClickListener(v -> {
+            if (quantity[0] < 20) {
+                quantity[0]++;
+                tvQuantity.setText(String.valueOf(quantity[0]));
+                tvTotalPrice.setText("$" + (int) (trip.getPrice() * quantity[0]));
+            }
+        });
 
         AlertDialog dialog = new AlertDialog.Builder(requireContext())
                 .setView(dialogView)
@@ -165,41 +170,23 @@ public class TripDetailFragment extends Fragment {
         dialog.show();
 
         btnConfirm.setOnClickListener(v -> {
-            String quantityStr = etQuantity.getText().toString().trim();
-            if (quantityStr.isEmpty()) {
-                etQuantity.setError("Please enter number of travelers");
-                return;
-            }
-            int quantity;
-            try {
-                quantity = Integer.parseInt(quantityStr);
-                if (quantity <= 0) throw new NumberFormatException();
-            } catch (NumberFormatException e) {
-                etQuantity.setError("Enter a valid number");
-                return;
-            }
-
             String type = spinnerType.getSelectedItem().toString();
-            String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                    .format(new Date());
+            String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+            double total = trip.getPrice() * quantity[0];
 
             boolean ok = dbHelper.insertReservation(
-                    currentUserId, trip.getId(), date, quantity, type, "active");
+                    loggedInEmail, trip.getId(), trip.getDestination(),
+                    quantity[0], type, date, total, "Confirmed");
 
-            if (ok) {
-                Toast.makeText(requireContext(),
-                        "Reservation confirmed! ✓", Toast.LENGTH_LONG).show();
-                dialog.dismiss();
-            } else {
-                Toast.makeText(requireContext(),
-                        "Failed to reserve. Try again.", Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(requireContext(),
+                    ok ? "Reservation confirmed for " + trip.getDestination() + "!" : "Failed. Try again.",
+                    Toast.LENGTH_SHORT).show();
+            if (ok) dialog.dismiss();
         });
 
         btnCancel.setOnClickListener(v -> dialog.dismiss());
     }
 
-    // ── Image loader ──────────────────────────────────────────────────────────
     private void loadImage(String imageUrl, ImageView imageView) {
         imageView.setImageResource(R.drawable.ic_plane);
         if (imageUrl == null || imageUrl.isEmpty()) return;
