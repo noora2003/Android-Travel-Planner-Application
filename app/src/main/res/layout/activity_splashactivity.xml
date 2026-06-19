@@ -7,7 +7,6 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <!-- Plane Icon inside white circle -->
     <ImageView
         android:id="@+id/ivLogo"
         android:layout_width="120dp"
@@ -18,7 +17,6 @@
         android:src="@drawable/ic_plane"
         app:tint="#1F6F5F" />
 
-    <!-- App Name -->
     <TextView
         android:id="@+id/tvAppName"
         android:layout_width="wrap_content"
@@ -30,7 +28,6 @@
         android:textSize="34sp"
         android:textStyle="bold" />
 
-    <!-- Tagline -->
     <TextView
         android:id="@+id/tvTagline"
         android:layout_width="wrap_content"

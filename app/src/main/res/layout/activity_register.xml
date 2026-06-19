@@ -12,7 +12,6 @@
         android:orientation="vertical"
         android:padding="24dp">
 
-        <!-- Header -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -48,7 +47,6 @@
                 android:layout_marginTop="4dp" />
         </LinearLayout>
 
-        <!-- First Name -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -76,7 +74,6 @@
                 android:textColor="#1F6F56" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Last Name -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -104,7 +101,6 @@
                 android:textColor="#1F6F56" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Email -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -132,7 +128,6 @@
                 android:textColor="#1F6F56" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Phone Number -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -160,7 +155,6 @@
                 android:textColor="#1F6F56" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Gender Spinner -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -179,7 +173,6 @@
             android:paddingEnd="12dp"
             android:layout_marginBottom="14dp" />
 
-        <!-- Category Spinner -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -198,7 +191,6 @@
             android:paddingEnd="12dp"
             android:layout_marginBottom="14dp" />
 
-        <!-- Password -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -227,7 +219,6 @@
                 android:textColor="#1F6F56" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Password hint -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -236,7 +227,6 @@
             android:textSize="11sp"
             android:layout_marginBottom="14dp" />
 
-        <!-- Confirm Password -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -265,7 +255,6 @@
                 android:textColor="#1F6F56" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Register Button -->
         <Button
             android:id="@+id/btnRegister"
             android:layout_width="match_parent"
@@ -277,7 +266,6 @@
             android:backgroundTint="#1F6F56"
             android:layout_marginBottom="16dp" />
 
-        <!-- Back to Login -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

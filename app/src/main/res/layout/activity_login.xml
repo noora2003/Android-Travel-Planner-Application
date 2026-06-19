@@ -13,7 +13,6 @@
         android:padding="32dp"
         android:gravity="center_horizontal">
 
-        <!-- Logo -->
         <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
@@ -25,7 +24,6 @@
             android:contentDescription="App logo"
             app:tint="#E7E1B1" />
 
-        <!-- App Title -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,7 +41,6 @@
             android:textColor="#1F6F5F"
             android:textSize="14sp" />
 
-        <!-- Email Label -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -53,7 +50,6 @@
             android:textSize="13sp"
             android:textStyle="bold" />
 
-        <!-- Email Input -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/emailLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -74,7 +70,6 @@
                 android:textColor="#1F6F5F" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Password Label -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -84,7 +79,6 @@
             android:textSize="13sp"
             android:textStyle="bold" />
 
-        <!-- Password Input -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/passwordLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -106,7 +100,6 @@
                 android:textColor="#1F6F5F" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Error -->
         <TextView
             android:id="@+id/tvError"
             android:layout_width="match_parent"
@@ -117,7 +110,6 @@
             android:layout_marginBottom="12dp"
             android:visibility="gone" />
 
-        <!-- Remember Me -->
         <CheckBox
             android:id="@+id/cbRememberMe"
             android:layout_width="match_parent"
@@ -128,7 +120,6 @@
             android:textColor="#1F6F5F"
             android:textSize="13sp" />
 
-        <!-- Login Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
@@ -139,7 +130,6 @@
             android:backgroundTint="#1F6F5F"
              />
 
-        <!-- Divider -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -169,7 +159,6 @@
                 android:background="#B4B2A9" />
         </LinearLayout>
 
-        <!-- Sign Up Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSignUp"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
