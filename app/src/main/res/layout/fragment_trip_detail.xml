@@ -1,367 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ede9e6">
+    android:background="#FBF5DD">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottomBar">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <!-- Hero Image -->
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="260dp">
 
-            <!-- Hero Image Section -->
-            <FrameLayout
+            <ImageView
+                android:id="@+id/ivDetailImage"
                 android:layout_width="match_parent"
-                android:layout_height="280dp">
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:contentDescription="Trip image" />
 
-                <ImageView
-                    android:id="@+id/ivHeroImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:contentDescription="Trip image" />
+            <!-- Dark overlay -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/card_gradient_overlay" />
 
-                <!-- Top gradient -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/hero_gradient_overlay" />
+            <!-- Back button -->
+            <ImageView
+                android:id="@+id/ivBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="14dp"
+                android:layout_gravity="top|start"
+                android:src="@android:drawable/ic_media_previous"
+                android:background="@drawable/circle_white_bg"
+                android:padding="8dp"
+                android:contentDescription="Back" />
 
-                <!-- Back button -->
-                <ImageView
-                    android:id="@+id/btnBack"
-                    android:layout_width="38dp"
-                    android:layout_height="38dp"
-                    android:layout_gravity="top|start"
-                    android:layout_margin="14dp"
-                    android:src="@android:drawable/ic_menu_close_clear_cancel"
-                    android:background="@drawable/circle_white_bg"
-                    android:padding="9dp"
-                    android:contentDescription="Back"
-                    app:tint="#1F6F5F" />
+            <!-- Favorite button on hero -->
+            <ImageView
+                android:id="@+id/ivDetailFavorite"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="14dp"
+                android:layout_gravity="top|end"
+                android:src="@drawable/ic_favorite_border"
+                android:background="@drawable/circle_white_bg"
+                android:padding="8dp"
+                android:contentDescription="Favorite" />
 
-                <!-- Favorite button -->
-                <ImageView
-                    android:id="@+id/btnFavorite"
-                    android:layout_width="38dp"
-                    android:layout_height="38dp"
-                    android:layout_gravity="top|end"
-                    android:layout_margin="14dp"
-                    android:src="@drawable/ic_favorite_border"
-                    android:background="@drawable/circle_white_bg"
-                    android:padding="8dp"
-                    android:contentDescription="Favorite" />
-
-                <!-- Destination name -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:id="@+id/tvDestination"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="#FFFFFF"
-                        android:textSize="26sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tvCountry"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="#DDFFFFFF"
-                        android:textSize="14sp" />
-                </LinearLayout>
-            </FrameLayout>
-
-            <!-- Content -->
+            <!-- Destination name on image -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
                 android:orientation="vertical"
                 android:padding="18dp">
 
-                <!-- Stats Row -->
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/tvDetailDestination"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="20dp">
+                    android:textColor="#EEEEEE"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:background="@drawable/stat_card_bg"
-                        android:padding="10dp"
-                        android:layout_marginEnd="6dp">
+                <TextView
+                    android:id="@+id/tvDetailCountry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#CCEEEEEE"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </FrameLayout>
 
-                        <TextView
-                            android:id="@+id/tvRating"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="#1F6F5F"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
+        <!-- Info Cards Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Rating"
-                            android:textColor="#2FA084"
-                            android:textSize="10sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:background="@drawable/stat_card_bg"
-                        android:padding="10dp"
-                        android:layout_marginEnd="6dp">
-
-                        <TextView
-                            android:id="@+id/tvDuration"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="#1F6F5F"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Duration"
-                            android:textColor="#2FA084"
-                            android:textSize="10sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:background="@drawable/stat_card_bg"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:id="@+id/tvPrice"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="#1F6F5F"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Per person"
-                            android:textColor="#2FA084"
-                            android:textSize="10sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <!-- About section -->
+            <!-- Rating -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:background="@drawable/stat_card_bg"
+                android:padding="12dp"
+                android:gravity="center"
+                android:layout_marginEnd="8dp">
+                <TextView
+                    android:id="@+id/tvDetailRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#2FA084"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="About this trip"
-                    android:textColor="#1F6F5F"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="8dp" />
+                    android:text="Rating"
+                    android:textColor="#888780"
+                    android:textSize="11sp" />
+            </LinearLayout>
 
+            <!-- Price -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:background="@drawable/stat_card_bg"
+                android:padding="12dp"
+                android:gravity="center"
+                android:layout_marginEnd="8dp">
                 <TextView
-                    android:id="@+id/tvDescription"
-                    android:layout_width="match_parent"
+                    android:id="@+id/tvDetailPrice"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#444444"
-                    android:textSize="13sp"
-                    android:lineSpacingExtra="4dp"
-                    android:layout_marginBottom="20dp" />
-
-                <!-- Trip details grid -->
+                    android:textColor="#0D530E"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Trip details"
-                    android:textColor="#1F6F5F"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="8dp" />
+                    android:text="Per person"
+                    android:textColor="#888780"
+                    android:textSize="11sp" />
+            </LinearLayout>
 
-                <GridLayout
-                    android:layout_width="match_parent"
+            <!-- Duration -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:background="@drawable/stat_card_bg"
+                android:padding="12dp"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/tvDetailDuration"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:columnCount="2"
-                    android:rowCount="2">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="4dp"
-                        android:orientation="vertical"
-                        android:background="@drawable/stat_card_bg"
-                        android:padding="12dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Country"
-                            android:textColor="#888880"
-                            android:textSize="10sp" />
-
-                        <TextView
-                            android:id="@+id/tvCountryDetail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="#1F6F5F"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="4dp"
-                        android:orientation="vertical"
-                        android:background="@drawable/stat_card_bg"
-                        android:padding="12dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Duration"
-                            android:textColor="#888880"
-                            android:textSize="10sp" />
-
-                        <TextView
-                            android:id="@+id/tvDurationDetail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="#1F6F5F"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="4dp"
-                        android:orientation="vertical"
-                        android:background="@drawable/stat_card_bg"
-                        android:padding="12dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Rating"
-                            android:textColor="#888880"
-                            android:textSize="10sp" />
-
-                        <TextView
-                            android:id="@+id/tvRatingDetail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="#1F6F5F"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="4dp"
-                        android:orientation="vertical"
-                        android:background="@drawable/stat_card_bg"
-                        android:padding="12dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Price"
-                            android:textColor="#888880"
-                            android:textSize="10sp" />
-
-                        <TextView
-                            android:id="@+id/tvPriceDetail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="#1F6F5F"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                </GridLayout>
-
+                    android:textColor="#1F6F5F"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Days"
+                    android:textColor="#888780"
+                    android:textSize="11sp" />
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
 
-    <!-- Bottom bar -->
-    <LinearLayout
-        android:id="@+id/bottomBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:background="#ede9e6"
-        android:padding="16dp"
-        android:elevation="8dp">
-
+        <!-- Description -->
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="16dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="price/person"
-                android:textColor="#888880"
-                android:textSize="10sp" />
+                android:text="About this trip"
+                android:textColor="#0D530E"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
 
             <TextView
-                android:id="@+id/tvBottomPrice"
-                android:layout_width="wrap_content"
+                android:id="@+id/tvDetailDescription"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#1F6F5F"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textColor="#444"
+                android:textSize="14sp"
+                android:lineSpacingExtra="4dp" />
         </LinearLayout>
 
+        <!-- Reserve Button -->
         <Button
-            android:id="@+id/btnReserveNow"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:text="Reserve Now"
-            android:textColor="#EEEEEE"
-            android:textSize="14sp"
+            android:id="@+id/btnDetailReserve"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="24dp"
+            android:text="RESERVE THIS TRIP"
+            android:textColor="#E7E1B1"
+            android:textSize="15sp"
             android:textStyle="bold"
-            android:backgroundTint="#1F6F5F"
-            android:paddingStart="24dp"
-            android:paddingEnd="24dp" />
+            android:backgroundTint="#0D530E" />
 
     </LinearLayout>
-
-</RelativeLayout>
+</ScrollView>

@@ -338,5 +338,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rows > 0;
     }
 
+    public TripModel getTripById(int tripId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.query(TABLE_TRIPS, null,
+                COL_TRIP_ID + "=?",
+                new String[]{String.valueOf(tripId)},
+                null, null, null);
+        if (c != null && c.moveToFirst()) {
+            TripModel trip = new TripModel(
+                    c.getInt(c.getColumnIndexOrThrow(COL_TRIP_ID)),
+                    c.getString(c.getColumnIndexOrThrow(COL_DESTINATION)),
+                    c.getString(c.getColumnIndexOrThrow(COL_COUNTRY)),
+                    c.getInt(c.getColumnIndexOrThrow(COL_DURATION)),
+                    c.getDouble(c.getColumnIndexOrThrow(COL_PRICE)),
+                    c.getDouble(c.getColumnIndexOrThrow(COL_RATING)),
+                    c.getString(c.getColumnIndexOrThrow(COL_DESCRIPTION)),
+                    c.getString(c.getColumnIndexOrThrow(COL_IMAGE))
+            );
+            c.close();
+            return trip;
+        }
+        if (c != null) c.close();
+        return null;
+    }
+
 
 }
