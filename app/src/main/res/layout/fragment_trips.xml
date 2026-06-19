@@ -5,7 +5,6 @@
     android:orientation="vertical"
     android:background="#ede9e6">
 
-    <!-- Green Header -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +24,6 @@
             android:textSize="28sp"
             android:textStyle="bold" />
 
-        <!-- Search Bar -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="48dp"
@@ -55,7 +53,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Filter Chips -->
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -73,7 +70,6 @@
             android:orientation="horizontal" />
     </HorizontalScrollView>
 
-    <!-- Result count -->
     <TextView
         android:id="@+id/tvResultCount"
         android:layout_width="match_parent"
@@ -84,7 +80,6 @@
         android:textColor="#2FA084"
         android:textSize="12sp" />
 
-    <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvTrips"
         android:layout_width="match_parent"
@@ -96,7 +91,6 @@
         android:paddingBottom="16dp"
         android:clipToPadding="false" />
 
-    <!-- Empty state -->
     <LinearLayout
         android:id="@+id/emptyState"
         android:layout_width="match_parent"

@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Full card background image -->
         <ImageView
             android:id="@+id/ivTripImage"
             android:layout_width="match_parent"
@@ -21,13 +20,11 @@
             android:scaleType="centerCrop"
             android:contentDescription="Trip image" />
 
-        <!-- Dark gradient overlay -->
         <View
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/card_gradient_overlay" />
 
-        <!-- Number badge top left -->
         <TextView
             android:id="@+id/tvNumber"
             android:layout_width="28dp"
@@ -40,7 +37,6 @@
             android:textSize="12sp"
             android:textStyle="bold" />
 
-        <!-- Favorite label top right -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -70,15 +66,13 @@
                 android:src="@drawable/ic_favorite_border" />
         </LinearLayout>
 
-        <!-- Bottom content -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:orientation="vertical"
+            android:orDestinationientation="vertical"
             android:padding="14dp">
 
-            <!-- Destination -->
             <TextView
                 android:id="@+id/tvDestination"
                 android:layout_width="wrap_content"
@@ -87,7 +81,6 @@
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
-            <!-- Country -->
             <TextView
                 android:id="@+id/tvCountry"
                 android:layout_width="wrap_content"
@@ -96,7 +89,6 @@
                 android:textSize="12sp"
                 android:layout_marginBottom="6dp" />
 
-            <!-- Rating + Price + Reserve -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -125,7 +117,6 @@
                         android:textSize="12sp" />
                 </LinearLayout>
 
-                <!-- Reserve Button -->
                 <Button
                     android:id="@+id/btnReserve"
                     android:layout_width="wrap_content"

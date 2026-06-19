@@ -8,7 +8,6 @@
     android:padding="20dp"
     android:background="#0D530E">
 
-    <!-- Admin Icon -->
     <ImageView
         android:id="@+id/navAdminIcon"
         android:layout_width="64dp"
@@ -20,7 +19,6 @@
         android:layout_marginBottom="10dp"
         app:tint="#0D530E" />
 
-    <!-- Admin Title -->
     <TextView
         android:id="@+id/navAdminTitle"
         android:layout_width="wrap_content"
@@ -30,7 +28,6 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
-    <!-- Admin Email -->
     <TextView
         android:id="@+id/navAdminEmail"
         android:layout_width="wrap_content"

@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Header Card -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,7 +21,6 @@
             android:paddingStart="24dp"
             android:paddingEnd="24dp">
 
-            <!-- Profile Picture -->
             <FrameLayout
                 android:layout_width="100dp"
                 android:layout_height="100dp">
@@ -70,7 +68,6 @@
                 android:textSize="13sp" />
         </LinearLayout>
 
-        <!-- Edit Profile Section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -86,7 +83,6 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="16dp" />
 
-            <!-- First Name -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -114,7 +110,6 @@
                     android:textColor="#1F6F5F" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Last Name -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -142,7 +137,6 @@
                     android:textColor="#1F6F5F" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Phone -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -181,14 +175,12 @@
                 android:backgroundTint="#1F6F5F"
                 android:layout_marginBottom="28dp" />
 
-            <!-- Divider -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#DDDDDD"
                 android:layout_marginBottom="24dp" />
 
-            <!-- Change Password Section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -198,7 +190,6 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="16dp" />
 
-            <!-- Old password -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -227,7 +218,6 @@
                     android:textColor="#1F6F5F" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- New password -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -256,7 +246,6 @@
                     android:textColor="#1F6F5F" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Confirm password -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

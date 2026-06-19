@@ -8,7 +8,6 @@
     android:padding="20dp"
     android:background="#1F6F5F">
 
-    <!-- Profile picture circle -->
     <ImageView
         android:id="@+id/navProfilePic"
         android:layout_width="64dp"
@@ -20,7 +19,6 @@
         android:layout_marginBottom="10dp"
         app:tint="#1F6F5F" />
 
-    <!-- User full name -->
     <TextView
         android:id="@+id/navUserName"
         android:layout_width="wrap_content"
@@ -30,7 +28,6 @@
         android:textSize="16sp"
         android:textStyle="bold" />
 
-    <!-- User email -->
     <TextView
         android:id="@+id/navUserEmail"
         android:layout_width="wrap_content"

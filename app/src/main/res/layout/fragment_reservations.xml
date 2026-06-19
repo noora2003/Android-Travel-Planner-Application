@@ -5,7 +5,6 @@
     android:orientation="vertical"
     android:background="#F5F5F5">
 
-    <!-- Header -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,7 +29,6 @@
             android:layout_marginTop="4dp"/>
     </LinearLayout>
 
-    <!-- Scrollable list -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -44,7 +42,6 @@
             android:paddingEnd="16dp"
             android:paddingBottom="24dp">
 
-            <!-- Empty state -->
             <TextView
                 android:id="@+id/tvEmpty"
                 android:layout_width="match_parent"
@@ -56,7 +53,6 @@
                 android:padding="48dp"
                 android:visibility="gone"/>
 
-            <!-- Cards added programmatically here -->
             <LinearLayout
                 android:id="@+id/reservationsContainer"
                 android:layout_width="match_parent"

@@ -9,7 +9,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Hero Image -->
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="260dp">
@@ -21,13 +20,11 @@
                 android:scaleType="centerCrop"
                 android:contentDescription="Trip image" />
 
-            <!-- Dark overlay -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/card_gradient_overlay" />
 
-            <!-- Back button -->
             <ImageView
                 android:id="@+id/ivBack"
                 android:layout_width="40dp"
@@ -39,7 +36,6 @@
                 android:padding="8dp"
                 android:contentDescription="Back" />
 
-            <!-- Favorite button on hero -->
             <ImageView
                 android:id="@+id/ivDetailFavorite"
                 android:layout_width="40dp"
@@ -51,7 +47,6 @@
                 android:padding="8dp"
                 android:contentDescription="Favorite" />
 
-            <!-- Destination name on image -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -76,14 +71,12 @@
             </LinearLayout>
         </FrameLayout>
 
-        <!-- Info Cards Row -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="16dp">
 
-            <!-- Rating -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -108,7 +101,6 @@
                     android:textSize="11sp" />
             </LinearLayout>
 
-            <!-- Price -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -133,7 +125,6 @@
                     android:textSize="11sp" />
             </LinearLayout>
 
-            <!-- Duration -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -158,7 +149,6 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Description -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -185,7 +175,6 @@
                 android:lineSpacingExtra="4dp" />
         </LinearLayout>
 
-        <!-- Reserve Button -->
         <Button
             android:id="@+id/btnDetailReserve"
             android:layout_width="match_parent"
